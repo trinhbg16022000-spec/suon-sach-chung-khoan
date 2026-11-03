@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sườn sách chứng khoán</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e3ded3;
+  --accent:#1f5f8b; --accent-soft:#e6f0f7; --part:#123e5c;
+  --note-bg:#fff7e3; --note-ink:#7a5200; --note-line:#f0d58f;
+  --tool-bg:#f2f7f2; --tool-ink:#2d5a33;
+  --fx-bg:#e3f1fb; --fx-ink:#0f4f7a; --fx-line:#7fb6dc; --fx-soft:#f3f9fd;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181c; --card:#1d2126; --ink:#e6e8eb; --muted:#9aa3ad; --line:#30363d;
+    --accent:#6fb3e0; --accent-soft:#1c2c3a; --part:#9fd0f0;
+    --note-bg:#2e2715; --note-ink:#f0cf86; --note-line:#5a4a20;
+    --tool-bg:#1b2a1e; --tool-ink:#9fd3a8;
+    --fx-bg:#16293a; --fx-ink:#9ccdf0; --fx-line:#2f5f84; --fx-soft:#18222c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15181c; --card:#1d2126; --ink:#e6e8eb; --muted:#9aa3ad; --line:#30363d;
+  --accent:#6fb3e0; --accent-soft:#1c2c3a; --part:#9fd0f0;
+  --note-bg:#2e2715; --note-ink:#f0cf86; --note-line:#5a4a20;
+  --tool-bg:#1b2a1e; --tool-ink:#9fd3a8;
+  --fx-bg:#16293a; --fx-ink:#9ccdf0; --fx-line:#2f5f84; --fx-soft:#18222c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;line-height:1.25;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 24px}
+h2.sec{font-size:20px;margin:40px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:0 0 14px}
+.toc ol{margin:6px 0 0;padding-left:22px}
+.toc li{margin:2px 0}
+.toc a{color:var(--accent);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.part{margin:36px 0 10px;padding:14px 18px;border-radius:12px;background:var(--accent-soft);color:var(--part)}
+.part h2{margin:0;font-size:20px;letter-spacing:.3px}
+.part p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.chap h3{margin:0 0 4px;font-size:18px;color:var(--accent)}
+.pages{color:var(--muted);font-weight:400;font-size:14px}
+.goal{margin:0 0 10px;color:var(--muted);font-size:14.5px}
+.goal b{color:var(--ink)}
+.chap ol.m{list-style:none;margin:0;padding:0}
+.chap ol.m>li{padding:8px 0;border-top:1px dashed var(--line)}
+.chap ol.m>li:first-child{border-top:0}
+.num{font-weight:700;margin-right:6px}
+.t{font-weight:600}
+.chap ul{margin:4px 0 0;padding-left:22px;color:var(--ink)}
+.chap ul li{margin:2px 0}
+.group{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 2px}
+.tool{margin-top:10px;background:var(--tool-bg);color:var(--tool-ink);padding:8px 12px;border-radius:8px;font-size:14.5px}
+.rn{display:block;margin:4px 0 2px;padding:4px 10px;background:var(--note-bg);color:var(--note-ink);border-left:3px solid var(--note-line);border-radius:4px;font-size:13.5px;font-weight:400;line-height:1.5}
+.part .rn{margin-top:8px}
+.chap h3 .rn{font-size:13.5px}
+.rn i{font-style:normal;text-decoration:line-through;opacity:.8}
+.fx{display:block;margin:4px 0 2px;padding:4px 10px;background:var(--fx-bg);color:var(--fx-ink);border-left:3px solid var(--fx-line);border-radius:4px;font-size:13.5px;font-weight:600;line-height:1.5}
+.chap h3 .fx{font-size:13.5px}
+li.add{background:var(--fx-soft);padding-left:8px!important;padding-right:8px!important;border-radius:6px}
+.card.add{background:var(--fx-soft);border-color:var(--fx-line)}
+li.addl{color:var(--fx-ink)}
+body.clean .fx{display:none}
+body.clean li.add{background:none}
+body.clean .card.add{background:var(--card);border-color:var(--line)}
+body.clean li.addl{color:inherit}
+body.clean .rn{display:none}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 0}
+.bar button{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+.tbl{overflow-x:auto}
+.note li{margin:6px 0}
+@media (max-width:600px){
+  h1{font-size:23px}
+  .card{padding:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Sườn sách đầu tư chứng khoán — bản đặt tên mới</h1>
+<p class="sub">5 chương · 21 mục · đi từ người mới bắt đầu tới chuyên sâu · khoảng 200 trang + phụ lục</p>
+
+<div class="card">
+  <b>Nguyên tắc đặt tên:</b>
+  <ul style="margin:6px 0 0;padding-left:22px">
+    <li><b>Đúng thuật ngữ</b> chứng khoán Việt Nam (P/E, ROE, price action, con hào kinh tế, cơ cấu danh mục…), giải nghĩa ngay trong nội dung.</li>
+    <li><b>Thực chiến:</b> tên nói ra việc người đọc làm được sau khi đọc (đọc bảng giá, đặt lệnh, tính khối lượng mua, đặt điểm cắt lỗ…).</li>
+    <li><b>Xúc tích:</b> tên mục nhỏ ưu tiên dưới 12 chữ; tên dạng câu hỏi khi đó là câu người mới thật sự hay hỏi.</li>
+    <li>Tên chương có hai vế: <b>chủ đề</b> + <b>kết quả người đọc đạt được</b>.</li>
+  </ul>
+  <div class="bar">
+    <button type="button" id="bNote" aria-pressed="true">Hiện ghi chú đổi tên</button>
+    <button type="button" id="bClean" aria-pressed="false">Bản sạch (chỉ tên mới)</button>
+  </div>
+  <p style="margin:10px 0 0;color:var(--muted);font-size:14px">Ô vàng = ghi chú: tên cũ (gạch ngang) và lý do đổi. Mục không có ô vàng là giữ nguyên tên. <b style="color:var(--fx-ink)">Ô xanh = phần thêm mới để sửa 3 lỗi chết người</b> (dòng chữ xanh là ý thêm vào mục cũ); nội dung cũ giữ nguyên. Tóm tắt ở <a href="#fix3" style="color:var(--accent)">cuối trang</a>.</p>
+</div>
+
+<div class="card toc">
+  <b>Mục lục nhanh</b>
+  <ol>
+    <li><a href="#p0">Lời mở đầu</a></li>
+    <li><a href="#p1">Chương 1 — Nền móng đầu tư: hiểu đúng trước khi xuống tiền</a> (4 mục — thêm mục 4)</li>
+    <li><a href="#p2">Chương 2 — Thực hành giao dịch: từ mở tài khoản đến nắm giữ cổ phiếu</a> (4 mục)</li>
+    <li><a href="#p3">Chương 3 — Phân tích cơ bản: chọn doanh nghiệp tốt, mua giá hợp lý</a> (3 mục)</li>
+    <li><a href="#p4">Chương 4 — Phân tích kỹ thuật &amp; dòng tiền: mua đúng thời điểm</a> (5 mục)</li>
+    <li><a href="#p5">Chương 5 — Quản trị rủi ro &amp; chiến lược: giữ vốn, nhân lợi nhuận</a> (5 mục)</li>
+    <li><a href="#pl">Phụ lục</a></li>
+    <li><a href="#fix3">Sửa 3 lỗi chết người</a> · <a href="#changes">Tổng hợp thay đổi bố cục</a> · <a href="#notes">Điểm cần tác giả xác nhận</a></li>
+  </ol>
+</div>
+
+<!-- ============ LỜI MỞ ĐẦU ============ -->
+<div class="part" id="p0"><h2>LỜI MỞ ĐẦU</h2><p>Trang i–iv (đánh số riêng, không tính vào thân sách)</p></div>
+<div class="card chap">
+  <ol class="m">
+    <li><span class="num">•</span>Vì sao tôi viết cuốn sách này</li>
+    <li><span class="num">•</span>Cuốn sách dành cho ai</li>
+    <li><span class="num">•</span>Cách đọc sách: lộ trình 5 chương, ký hiệu công cụ đi kèm, người bận rộn nên đọc mục nào trước</li>
+  </ol>
+</div>
+
+<!-- ============ CHƯƠNG 1 ============ -->
+<div class="part" id="p1"><h2>CHƯƠNG 1 — NỀN MÓNG ĐẦU TƯ: HIỂU ĐÚNG TRƯỚC KHI XUỐNG TIỀN</h2><p>Trang 1–32</p>
+  <span class="rn">Tên cũ: <i>Nhập môn &amp; chuẩn bị tư duy</i> — “Nhập môn” chung chung; tên mới nói rõ mục đích của chương: chặn F0 xuống tiền khi chưa hiểu thị trường.</span></div>
+
+<div class="card chap">
+  <h3>Mục 1. Vì sao nên đầu tư cổ phiếu? <span class="pages">(tr. 1–9)</span>
+    <span class="rn">Tên cũ: <i>Chứng khoán là gì và vì sao nên đầu tư?</i> — rút gọn; sách tập trung vào cổ phiếu nên gọi thẳng “cổ phiếu”.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> hiểu bản chất cổ phiếu và lý do tiền nằm yên bị thua thiệt.</p>
+  <ol class="m">
+    <li><span class="num">1.1</span><span class="t">Tiền nằm yên là tiền mất giá</span>
+      <ul><li>Lạm phát và chi phí cơ hội</li></ul></li>
+    <li><span class="num">1.2</span><span class="t">Tiết kiệm, vàng, bất động sản hay cổ phiếu?</span>
+      <span class="rn">Tên cũ: <i>So sánh các kênh đầu tư phổ biến tại Việt Nam</i> — đặt thành câu hỏi mà người mới thật sự đang phân vân.</span>
+      <ul><li>Bảng so sánh: lợi nhuận, rủi ro, khả năng rút tiền, vốn tối thiểu</li></ul></li>
+    <li><span class="num">1.3</span><span class="t">Cổ phiếu là gì? Bạn kiếm lời từ đâu?</span>
+      <span class="rn">Tên cũ: <i>Chứng khoán là gì? Cổ phiếu là gì?</i> — thêm vế “kiếm lời từ đâu” vì nội dung có phần cổ tức và chênh lệch giá.</span>
+      <ul><li>Mua cổ phiếu = sở hữu một phần doanh nghiệp</li><li>Hai nguồn lợi nhuận: cổ tức và chênh lệch giá</li></ul></li>
+    <li><span class="num">1.4</span><span class="t">Đầu tư, đầu cơ hay đánh bạc?</span>
+      <span class="rn">Tên cũ: <i>Đầu tư hay “cờ bạc hợp pháp”?</i> — thêm “đầu cơ” cho đủ ba khái niệm mà nội dung phân biệt; bỏ chữ “hợp pháp” dễ gây hiểu lầm.</span>
+      <ul><li>Cái nhìn của xã hội về chứng khoán</li><li>Tư duy cốt lõi: ba khái niệm khác nhau ở đâu</li></ul></li>
+    <li><span class="num">1.5</span><span class="t">Lãi kép — “kỳ quan thứ 8”</span>
+      <ul><li>Ví dụ tính tay, bảng minh họa 10 – 20 – 30 năm</li><li>Câu chuyện lãi kép từ các cổ phiếu VN30</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 2. Bản đồ thị trường chứng khoán Việt Nam <span class="pages">(tr. 10–20)</span>
+    <span class="rn">Tên cũ: <i>Bức tranh toàn cảnh thị trường chứng khoán Việt Nam</i> — “bản đồ” ngắn hơn và gợi đúng việc: biết ai ở đâu, làm gì.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> biết thị trường vận hành thế nào và ai đang tham gia.</p>
+  <ol class="m">
+    <li><span class="num">2.1</span><span class="t">Ai quản lý, ai giữ tiền và cổ phiếu của bạn?</span>
+      <span class="rn">Tên cũ: <i>Hệ thống pháp lý &amp; hạ tầng thị trường</i> — tên cũ khô, người mới bỏ qua; tên mới trả lời đúng nỗi lo “có mất tiền không”.</span>
+      <ul><li>Ủy ban Chứng khoán Nhà nước, Sở Giao dịch, Tổng công ty Lưu ký (VSDC), công ty chứng khoán: ai làm gì</li></ul></li>
+    <li><span class="num">2.2</span><span class="t">HOSE, HNX, UPCoM: biên độ và giờ giao dịch</span>
+      <span class="rn">Tên cũ: <i>Ba sàn HOSE, HNX, UPCoM</i> — đưa luôn hai thông tin người đọc cần tra nhiều nhất vào tên.</span>
+      <ul><li>Đặc điểm từng sàn, biên độ dao động, thời gian giao dịch (cập nhật quy định)</li></ul></li>
+    <li><span class="num">2.3</span><span class="t">Các nhóm nhà đầu tư: cá nhân, tổ chức, khối ngoại, tự doanh</span>
+      <span class="rn">Tên cũ: <i>Ai đang tham gia thị trường?</i> — dùng đúng cách gọi trên bảng giá và bản tin chứng khoán.</span>
+      <ul><li>Thêm quỹ đầu tư; mỗi nhóm tác động tới giá ra sao</li></ul></li>
+    <li><span class="num">2.4</span><span class="t">VN-Index, VN30, HNX-Index: đọc “nhiệt độ” thị trường</span>
+      <span class="rn">Tên cũ: <i>Các chỉ số quan trọng</i> — nêu tên chỉ số và công dụng thay vì chữ chung “quan trọng”.</span></li>
+    <li><span class="num">2.5</span><span class="t">Các sản phẩm trên thị trường: từ cổ phiếu đến phái sinh</span>
+      <span class="rn">Tên cũ: <i>Bản đồ sản phẩm trên thị trường</i> — tránh lặp chữ “bản đồ” với tên mục 2.</span>
+      <ul><li>Cổ phiếu (trọng tâm của sách), trái phiếu, chứng chỉ quỹ, ETF, chứng quyền, phái sinh — giới thiệu ngắn</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 3. Bẫy tâm lý và bẫy lừa đảo của F0 <span class="pages">(tr. 21–32)</span>
+    <span class="rn">Tên cũ: <i>Tâm lý &amp; cạm bẫy của nhà đầu tư mới (F0)</i> — tách rõ hai loại bẫy mà mục này nói tới.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> nhận diện sai lầm tư duy và các chiêu lừa trước khi bỏ tiền vào thị trường.</p>
+  <ol class="m">
+    <li><span class="num">3.1</span><span class="t">FOMO và FUD: hai kẻ thù đầu tiên</span>
+      <span class="rn">Tên cũ: <i>FOMO và FUD — hai tâm lý phổ biến nhất</i> — gọn hơn, nhấn vào việc phải đề phòng.</span>
+      <ul><li>FOMO: sợ bỏ lỡ; FUD: sợ hãi, nghi ngờ</li></ul></li>
+    <li><span class="num">3.2</span><span class="t">Bài học từ 4 cú sập: 2008, 2018, 2020, 2022</span>
+      <span class="rn">Tên cũ: <i>Tâm lý đám đông qua các cú sập lớn</i> — nêu số năm cụ thể để người đọc biết ngay mục có ví dụ thật.</span>
+      <ul><li>Tâm lý đám đông ở mỗi lần thị trường giảm mạnh và bài học rút ra</li><li class="addl">Nguyên nhân vĩ mô của từng cú sập: xem Chương 4, mục 4 (phần B) <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 3</span></li></ul></li>
+    <li><span class="num">3.3</span><span class="t">Nhận diện “phím hàng”, room VIP lùa gà, đa cấp tài chính</span>
+      <span class="rn">Tên cũ: <i>Cạm bẫy lừa đảo</i> — dùng đúng từ người đọc gặp trên mạng để họ nhận ra ngay.</span>
+      <ul><li>Thêm: ứng dụng giả mạo</li><li>Dấu hiệu nhận biết; cách kiểm tra chứng chỉ hành nghề của người tư vấn</li></ul></li>
+    <li><span class="num">3.4</span><span class="t">Bạn thuộc kiểu nhà đầu tư nào? (bài test khẩu vị rủi ro)</span>
+      <span class="rn">Tên cũ: <i>Bài test khẩu vị rủi ro cá nhân</i> — mở bằng câu hỏi để kéo người đọc làm bài; kết quả dùng lại ở Chương 5, mục 1.3.</span>
+      <ul><li class="addl">Kết quả dùng ngay ở mục 4.2 để chọn phong cách đầu tư <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 1</span></li></ul></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: bảng tự đánh giá khẩu vị rủi ro.</div>
+</div>
+
+<div class="card chap add">
+  <h3>Mục 4. Chọn phong cách đầu tư phù hợp với bạn <span class="pages">(trang bổ sung)</span>
+    <span class="fx">Thêm mới · Sửa lỗi 1: sách dạy cả đầu tư giá trị/tích sản lẫn giao dịch theo xu hướng, hai trường phái có luật mua – bán ngược nhau. Người đọc phải chọn phong cách TRƯỚC khi học công cụ, để không mua theo luật này rồi bán theo luật kia.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> biết mình theo phong cách nào trước khi học công cụ, để không dùng sai quy tắc.</p>
+  <ol class="m">
+    <li><span class="num">4.1</span><span class="t">Ba phong cách: tích sản, đầu tư giá trị, giao dịch theo xu hướng</span>
+      <ul><li>So sánh: thời gian nắm giữ, thời gian theo dõi mỗi tuần, công cụ chính, mức rủi ro</li></ul></li>
+    <li><span class="num">4.2</span><span class="t">Ghép phong cách với kết quả bài test khẩu vị rủi ro</span>
+      <ul><li>Dùng kết quả mục 3.4; người mới nên bắt đầu từ tích sản</li></ul></li>
+    <li><span class="num">4.3</span><span class="t">Mỗi phong cách một luật mua – bán riêng</span>
+      <ul><li>Tích sản: mua định kỳ, không cắt lỗ theo giá, cơ cấu định kỳ</li><li>Đầu tư giá trị: mua dưới giá trị thực, bán khi luận điểm đầu tư bị phá vỡ — không bán chỉ vì giá giảm</li><li>Giao dịch theo xu hướng: mua tại điểm mua, cắt lỗ 6–8% không ngoại lệ</li><li><b>Không trộn luật của phong cách này sang phong cách khác</b></li></ul></li>
+    <li><span class="num">4.4</span><span class="t">Bản đồ đọc sách theo phong cách</span>
+      <ul><li>Mỗi phong cách: chương nào đọc kỹ, chương nào đọc lướt</li></ul></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: bảng so sánh 3 phong cách và luật mua – bán của từng phong cách.</div>
+</div>
+
+<!-- ============ CHƯƠNG 2 ============ -->
+<div class="part" id="p2"><h2>CHƯƠNG 2 — THỰC HÀNH GIAO DỊCH: TỪ MỞ TÀI KHOẢN ĐẾN NẮM GIỮ CỔ PHIẾU</h2><p>Trang 33–66</p>
+  <span class="rn">Tên cũ: <i>Thực hành giao dịch căn bản</i> — thêm vế kết quả. Dùng “nắm giữ cổ phiếu” thay cho “lệnh đầu tiên” để bao trùm cả mục 4 (sự kiện doanh nghiệp xảy ra khi đã cầm cổ phiếu).</span></div>
+
+<div class="card chap">
+  <h3>Mục 1. Mở tài khoản và bộ đồ nghề nhà đầu tư <span class="pages">(tr. 33–40)</span>
+    <span class="rn">Tên cũ: <i>Mở tài khoản &amp; chuẩn bị công cụ</i> — “bộ đồ nghề” dễ nhớ, gắn với phần công cụ ở 1.5.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> có tài khoản, nắm chi phí và bộ công cụ cần dùng.</p>
+  <ol class="m">
+    <li><span class="num">1.1</span><span class="t">Tiền và cổ phiếu của bạn có an toàn không?</span>
+      <span class="rn">Tên cũ: <i>Vì sao phải có tài khoản chứng khoán và tiền của bạn có an toàn không?</i> — rút gọn, giữ câu hỏi chính.</span>
+      <ul><li>Ngày xưa lưu ký tại công ty chứng khoán; ngày nay mở online</li><li>Công ty chứng khoán được cấp phép; tiền và cổ phiếu được tách bạch, lưu ký tập trung</li><li>Rủi ro thật thường đến từ cá nhân mạo danh (dẫn về Chương 1, mục 3.3)</li></ul></li>
+    <li><span class="num">1.2</span><span class="t">Chọn công ty chứng khoán phù hợp</span>
+      <ul><li>Tiêu chí: phí, ứng dụng, hỗ trợ</li></ul></li>
+    <li><span class="num">1.3</span><span class="t">Mở tài khoản online và nộp tiền</span>
+      <span class="rn">Tên cũ: <i>Quy trình mở tài khoản và nộp tiền</i> — thêm “online” đúng thực tế hiện nay.</span></li>
+    <li><span class="num">1.4</span><span class="t">Phí giao dịch và thuế: mua bán tốn bao nhiêu?</span>
+      <span class="rn">Tên cũ: <i>Phí và thuế khi mua bán cổ phiếu</i> — thêm câu hỏi thực tế, có ví dụ tính tiền.</span></li>
+    <li><span class="num">1.5</span><span class="t">Bộ công cụ: app, biểu đồ, bộ lọc, nguồn tin</span>
+      <span class="rn">Tên cũ: <i>Bộ công cụ thường dùng</i> — liệt kê luôn 4 nhóm công cụ.</span>
+      <ul><li>Ứng dụng công ty chứng khoán, phần mềm biểu đồ, bộ lọc cổ phiếu</li><li>Báo cáo phân tích, nguồn tin và kênh công bố thông tin</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 2. Đọc bảng giá điện tử trong 3 phút <span class="pages">(tr. 41–50)</span>
+    <span class="rn">Tên cũ: <i>Đọc vị bảng giá điện tử</i> — đưa cam kết “3 phút” từ mục tiêu lên tên, cụ thể và hấp dẫn hơn.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đọc được bảng giá trong 3 phút.</p>
+  <ol class="m">
+    <li><span class="num">2.1</span><span class="t">Giải mã màu sắc: trần, sàn, tham chiếu, tăng, giảm</span>
+      <span class="rn">Tên cũ: <i>Giải mã sắc màu: xanh, đỏ, tím, vàng, xanh lơ</i> — gọi theo ý nghĩa của màu thay vì tên màu.</span>
+      <ul><li>Tím – trần, xanh lơ – sàn, vàng – tham chiếu, xanh – tăng, đỏ – giảm</li></ul></li>
+    <li><span class="num">2.2</span><span class="t">Ý nghĩa từng cột trên bảng giá</span>
+      <ul><li>Giá tham chiếu/trần/sàn, giá khớp, khối lượng, dư mua/dư bán, tổng khối lượng, mua/bán của khối ngoại</li></ul></li>
+    <li><span class="num">2.3</span><span class="t">Thực hành: đọc một bảng giá thật</span>
+      <span class="rn">Tên cũ: <i>Đọc bảng giá trong 3 phút</i> — “3 phút” đã lên tên mục 2, tránh lặp; nhấn vào phần thực hành có hình chụp chú thích.</span></li>
+    <li><span class="num">2.4</span><span class="t">Nhìn cung – cầu sơ bộ từ dư mua, dư bán</span>
+      <span class="rn">Tên cũ: <i>Từ bảng giá nhìn ra cung – cầu sơ bộ</i> — chỉ rõ cột cần nhìn; mở đường sang Chương 4, mục 3.</span></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 3. Đặt lệnh và chu kỳ thanh toán T+ <span class="pages">(tr. 51–56)</span>
+    <span class="rn">Tên cũ: <i>Đặt lệnh &amp; thanh toán</i> — dùng đúng thuật ngữ “chu kỳ thanh toán T+”.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đặt lệnh đầu tiên không lúng túng, biết khi nào cổ phiếu và tiền về tài khoản.</p>
+  <ol class="m">
+    <li><span class="num">3.1</span><span class="t">Phiên giao dịch và các loại lệnh: LO, ATO, ATC, MP</span>
+      <span class="rn">Tên cũ: <i>Các phiên giao dịch và loại lệnh phổ biến</i> — nêu tên lệnh ngay trên tiêu đề.</span>
+      <ul><li>Mẹo dùng từng loại lệnh hiệu quả</li></ul></li>
+    <li><span class="num">3.2</span><span class="t">Lô chẵn, lô lẻ và bước giá</span>
+      <span class="rn">Tên cũ: <i>Lô giao dịch, bước giá</i> — dùng đúng từ trên app giao dịch.</span></li>
+    <li><span class="num">3.3</span><span class="t">Đặt lệnh đầu tiên trên app</span>
+      <span class="rn">Tên cũ: <i>Đặt lệnh đầu tiên từng bước trên ứng dụng</i> — rút gọn.</span></li>
+    <li><span class="num">3.4</span><span class="t">T+: khi nào cổ phiếu về, khi nào tiền về?</span>
+      <span class="rn">Tên cũ: <i>Chu kỳ thanh toán T+</i> — thuật ngữ đã lên tên mục 3; mục nhỏ dùng câu hỏi người mới hay hỏi.</span>
+      <ul><li>Cập nhật quy định</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 4. Sự kiện doanh nghiệp: tác động tới tài khoản của bạn <span class="pages">(tr. 57–66)</span>
+    <span class="rn">Tên cũ: <i>Giải mã các sự kiện doanh nghiệp</i> — nhấn vào tác động tới tài khoản (giá điều chỉnh, cổ tức về, quyền mua phải nộp tiền) để rõ vì sao mục này nằm ở chương thực hành; phần đánh giá doanh nghiệp để ở Chương 3.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> hiểu mỗi thông báo của doanh nghiệp tác động gì tới tài khoản.</p>
+  <div class="group">A. Sự kiện định kỳ hằng năm</div>
+  <ol class="m">
+    <li><span class="num">4.1</span><span class="t">Đại hội cổ đông: quyền của bạn</span>
+      <span class="rn">Tên cũ: <i>Quyền của cổ đông và Đại hội cổ đông</i> — rút gọn, đặt sự kiện lên trước.</span></li>
+    <li><span class="num">4.2</span><span class="t">Mùa báo cáo tài chính quý và năm</span>
+      <span class="rn">Tên cũ: <i>Lịch công bố báo cáo tài chính quý, năm</i> — “mùa báo cáo” là cách giới đầu tư hay gọi.</span>
+      <ul><li>Chỉ nêu lịch công bố; cách đọc báo cáo xem Chương 3, mục 1</li></ul></li>
+    <li><span class="num">4.3</span><span class="t">Cổ tức tiền mặt và cổ tức cổ phiếu</span>
+      <span class="rn">Tên cũ: <i>Cổ tức: nhận bằng tiền hay bằng cổ phiếu</i> — dùng đúng thuật ngữ.</span>
+      <ul><li>Thuế liên quan</li></ul></li>
+    <li><span class="num">4.4</span><span class="t">Ngày không hưởng quyền và cách điều chỉnh giá</span>
+      <span class="rn">Tên cũ: <i>Các mốc ngày</i> — nêu mốc quan trọng nhất và việc cần tính.</span>
+      <ul><li>Ngày giao dịch không hưởng quyền, ngày đăng ký cuối cùng, ngày thanh toán — ví dụ tính</li></ul></li>
+  </ol>
+  <div class="group">B. Sự kiện bất thường</div>
+  <ol class="m">
+    <li><span class="num">4.5</span><span class="t">Phát hành thêm, thưởng, chia tách: hiểu đúng về pha loãng</span>
+      <span class="rn">Tên cũ: <i>Phát hành thêm, quyền mua, cổ phiếu thưởng, chia tách</i> — rút gọn và nêu khái niệm chính “pha loãng”.</span>
+      <ul><li>Bao gồm quyền mua cổ phiếu phát hành thêm</li><li>Chỉ nói cơ chế: số cổ phiếu tăng, giá điều chỉnh; ảnh hưởng tới EPS xem Chương 3, mục 3.2</li></ul></li>
+    <li><span class="num">4.6</span><span class="t">Tin bất thường: đổi lãnh đạo, cổ đông lớn, cảnh báo, hủy niêm yết</span>
+      <span class="rn">Tên cũ: <i>Sự kiện bất ngờ khác</i> — liệt kê luôn các loại tin hay gặp.</span>
+      <ul><li>Dạy nhận biết và đọc tin; đánh giá tin tốt hay xấu xem Chương 3, mục 2.5</li></ul></li>
+  </ol>
+  <div class="group">C. Kỹ năng</div>
+  <ol class="m">
+    <li><span class="num">4.7</span><span class="t">Đọc nhanh một bản công bố thông tin</span>
+      <span class="rn">Tên cũ: <i>Cách đọc một bản công bố thông tin</i> — thêm “nhanh”, đúng tinh thần thực chiến.</span></li>
+  </ol>
+</div>
+
+<!-- ============ CHƯƠNG 3 ============ -->
+<div class="part" id="p3"><h2>CHƯƠNG 3 — PHÂN TÍCH CƠ BẢN: CHỌN DOANH NGHIỆP TỐT, MUA GIÁ HỢP LÝ</h2><p>Trang 67–102</p>
+  <span class="rn">Tên cũ: <i>Phân tích cơ bản doanh nghiệp</i> — vế sau tóm đúng trình tự 3 mục: sức khỏe tài chính → chất lượng → định giá.</span></div>
+
+<div class="card chap">
+  <h3>Mục 1. Đọc báo cáo tài chính — khám sức khỏe doanh nghiệp <span class="pages">(tr. 67–80)</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đọc báo cáo tài chính mà không cần bằng tài chính.</p>
+  <ol class="m">
+    <li><span class="num">1.1</span><span class="t">Ba báo cáo tài chính và mối liên hệ</span>
+      <span class="rn">Tên cũ: <i>Tổng quan báo cáo tài chính — nơi tiềm ẩn “vàng ròng”</i> — rút gọn; ý “vàng ròng” giữ trong phần mở đoạn.</span></li>
+    <li><span class="num">1.2</span><span class="t">Bảng cân đối kế toán: tài sản, nợ, vốn chủ sở hữu</span></li>
+    <li><span class="num">1.3</span><span class="t">Doanh thu, lợi nhuận, dòng tiền — bộ ba cốt lõi</span>
+      <span class="rn">Tên cũ: <i>Ba yếu tố cốt lõi: doanh thu, lợi nhuận, dòng tiền</i> — đưa ba chỉ tiêu lên trước để dễ tra.</span>
+      <ul><li>Đọc kết quả kinh doanh và lưu chuyển tiền tệ</li></ul></li>
+    <li><span class="num">1.4</span><span class="t">Bộ chỉ số tài chính phải thuộc lòng</span>
+      <span class="rn">Tên cũ: <i>Các chỉ số tài chính quan trọng</i> — nhấn vào việc phải nắm chắc vì cả Chương 3 dùng lại.</span>
+      <ul><li>EPS, biên lợi nhuận gộp/ròng, ROE, ROA</li><li>Nợ trên vốn chủ, khả năng thanh toán, tăng trưởng kép (CAGR)</li><li class="addl">Bộ chỉ số này dành cho doanh nghiệp sản xuất, thương mại, dịch vụ; ngân hàng, chứng khoán, bất động sản xem mục 1.6 <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 2</span></li></ul></li>
+    <li><span class="num">1.5</span><span class="t">Dấu hiệu báo động đỏ trên báo cáo tài chính</span>
+      <span class="rn">Tên cũ: <i>Dấu hiệu cảnh báo</i> — “báo động đỏ” mạnh và dễ nhớ hơn.</span>
+      <ul><li>Lãi nhưng dòng tiền âm, phải thu phình to, nợ vay tăng nhanh, kiểm toán ngoại trừ</li><li class="addl">Không áp dấu hiệu “nợ vay tăng nhanh” cho ngân hàng, công ty chứng khoán (mục 1.6) <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 2</span></li></ul></li>
+    <li class="add"><span class="num">1.6</span><span class="t">Đọc báo cáo ngành đặc thù: ngân hàng, chứng khoán, bất động sản</span>
+      <span class="fx">Thêm mới · Sửa lỗi 2: khung chỉ số chung (biên gộp, nợ/vốn chủ…) sai với ngân hàng và công ty chứng khoán, trong khi sách gợi ý chính các ngành này và nhóm VN30 có tỷ trọng ngân hàng lớn.</span>
+      <ul><li>Ngân hàng: NIM (biên lãi ròng), tỷ lệ nợ xấu và bao phủ nợ xấu, CASA, CAR (hệ số an toàn vốn); nợ/vốn chủ cao là bình thường</li><li>Công ty chứng khoán: cơ cấu doanh thu (môi giới, cho vay margin, tự doanh), dư nợ margin trên vốn chủ, rủi ro danh mục tự doanh</li><li>Bất động sản: hàng tồn kho, người mua trả tiền trước, nợ vay và trái phiếu đến hạn, ghi nhận doanh thu theo bàn giao</li><li>Cảnh báo: không dùng bộ chỉ số ở mục 1.4 cho ba ngành này</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 2. Phân tích định tính: lợi thế cạnh tranh và ban lãnh đạo <span class="pages">(tr. 81–90)</span>
+    <span class="rn">Tên cũ: <i>Chất lượng doanh nghiệp — những điều con số không nói</i> — dùng thuật ngữ chuẩn “phân tích định tính” và nêu hai trọng tâm.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đánh giá những yếu tố ngoài báo cáo tài chính.</p>
+  <ol class="m">
+    <li><span class="num">2.1</span><span class="t">Thiên thời, địa lợi: vĩ mô và ngành được hưởng lợi</span>
+      <span class="rn">Tên cũ: <i>Thiên thời &amp; địa lợi</i> — thêm vế giải nghĩa để người đọc biết đang nói về gì.</span>
+      <ul><li>Thiên thời: bối cảnh vĩ mô, giá hàng hóa (ví dụ giá volfram tăng)</li><li>Địa lợi: vị trí, ngành nghề giúp doanh nghiệp hưởng lợi</li><li class="addl">Vĩ mô của toàn thị trường (lãi suất, tỷ giá, tín dụng) xem Chương 4, mục 4 phần B <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 3</span></li></ul></li>
+    <li><span class="num">2.2</span><span class="t">Con hào kinh tế: thương hiệu, chi phí thấp, thị phần</span>
+      <span class="rn">Tên cũ: <i>Lợi thế cạnh tranh bền vững</i> — “con hào kinh tế” (moat) là thuật ngữ quen thuộc của trường phái Buffett, nối liền sang 2.3.</span></li>
+    <li><span class="num">2.3</span><span class="t">Mô hình doanh nghiệp kiểu Warren Buffett</span>
+      <span class="rn">Tên cũ: <i>Dạng công ty giúp Warren Buffett trở thành tỷ phú</i> — rút gọn.</span>
+      <ul><li>Ví dụ minh họa theo phương pháp của ông</li></ul></li>
+    <li><span class="num">2.4</span><span class="t">Tìm con hào kinh tế ở doanh nghiệp Việt Nam</span>
+      <span class="rn">Tên cũ: <i>Áp dụng vào Việt Nam</i> — nêu rõ việc cần làm.</span>
+      <ul><li>Ở các ngành quen thuộc</li></ul></li>
+    <li><span class="num">2.5</span><span class="t">Nhân hòa: ban lãnh đạo, quản trị và cổ đông lớn</span>
+      <ul><li>Đánh giá các tin đổi lãnh đạo, cổ đông lớn mua/bán (cách đọc tin ở Chương 2, mục 4.6)</li></ul></li>
+    <li><span class="num">2.6</span><span class="t">5 dấu hiệu loại ngay khỏi danh mục theo dõi</span>
+      <span class="rn">Tên cũ: <i>5 dấu hiệu loại ngay — doanh nghiệp không bao giờ đầu tư</i> — rút gọn, dùng “danh mục theo dõi” (watchlist).</span></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 3. Định giá cổ phiếu và biên an toàn <span class="pages">(tr. 91–102)</span>
+    <span class="rn">Tên cũ: <i>Định giá &amp; biên an toàn</i> — thêm “cổ phiếu” cho rõ đối tượng.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> biết giá đang đắt hay rẻ một cách đơn giản.</p>
+  <ol class="m">
+    <li><span class="num">3.1</span><span class="t">Định giá nhanh bằng P/E, P/B</span>
+      <span class="rn">Tên cũ: <i>Định giá siêu tốc qua P/E và P/B</i> — rút gọn.</span>
+      <ul><li>So sánh theo ngành</li></ul></li>
+    <li><span class="num">3.2</span><span class="t">Soi chất lượng EPS</span>
+      <ul><li>Lợi nhuận bất thường, tính bền vững, xu hướng nhiều năm</li><li>EPS bị pha loãng khi phát hành thêm (cơ chế ở Chương 2, mục 4.5)</li></ul></li>
+    <li><span class="num">3.3</span><span class="t">Bẫy chỉ số: P/E thấp chưa chắc đã rẻ</span>
+      <span class="rn">Tên cũ: <i>Những hiểu lầm thường gặp về chỉ số cơ bản</i> — đưa ví dụ điển hình nhất lên tên.</span></li>
+    <li><span class="num">3.4</span><span class="t">Biên an toàn: mua dưới giá trị thực</span>
+      <span class="rn">Tên cũ: <i>Biên an toàn — khái niệm chủ chốt trong đầu tư</i> — tên mới giải nghĩa luôn khái niệm.</span>
+      <ul><li class="addl">Với nhà đầu tư giá trị: giá giảm khi luận điểm còn nguyên là cơ hội mua thêm, không phải tín hiệu cắt lỗ (Chương 5, mục 2.5) <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 1</span></li></ul></li>
+    <li><span class="num">3.5</span><span class="t">Case study: so sánh 4 doanh nghiệp cùng ngành</span></li>
+    <li><span class="num">3.6</span><span class="t">Quy trình 5 phút đọc nhanh một doanh nghiệp</span>
+      <span class="rn">Tên cũ: <i>Tổng hợp: “5 phút đọc nhanh một doanh nghiệp”</i> — gọi là “quy trình” vì có các bước cố định.</span>
+      <ul><li>Doanh thu → lợi nhuận → dòng tiền → nợ → định giá</li></ul></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: file Excel phân tích cổ phiếu; checklist phân tích sâu một doanh nghiệp.</div>
+</div>
+
+<!-- ============ CHƯƠNG 4 ============ -->
+<div class="part" id="p4"><h2>CHƯƠNG 4 — PHÂN TÍCH KỸ THUẬT &amp; DÒNG TIỀN: MUA ĐÚNG THỜI ĐIỂM</h2><p>Trang 103–144</p>
+  <span class="rn">Tên cũ: <i>Phân tích kỹ thuật &amp; dòng tiền</i> — thêm vế kết quả: Chương 3 trả lời “mua gì”, Chương 4 trả lời “mua khi nào”.</span></div>
+
+<div class="card chap">
+  <h3>Mục 1. Đọc biểu đồ nến và xu hướng <span class="pages">(tr. 103–112)</span>
+    <span class="rn">Tên cũ: <i>Biểu đồ giá căn bản</i> — nêu đúng hai thứ người đọc học được.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đọc được biểu đồ giá cơ bản.</p>
+  <ol class="m">
+    <li><span class="num">1.1</span><span class="t">Biểu đồ giá và các khung thời gian</span>
+      <span class="rn">Tên cũ: <i>Biểu đồ giá thể hiện điều gì; khung thời gian</i> — rút gọn.</span>
+      <ul><li>Khung ngày, tuần, tháng</li></ul></li>
+    <li><span class="num">1.2</span><span class="t">Cấu tạo và ý nghĩa nến Nhật</span>
+      <span class="rn">Tên cũ: <i>Nến Nhật: cấu tạo và ý nghĩa một cây nến</i> — rút gọn.</span></li>
+    <li><span class="num">1.3</span><span class="t">Mẫu hình nến đảo chiều: Doji, Búa, Nhấn chìm</span>
+      <span class="rn">Tên cũ: <i>Các mẫu hình nến cơ bản</i> — gọi đúng nhóm: đây là các mẫu nến báo đảo chiều.</span></li>
+    <li><span class="num">1.4</span><span class="t">Hỗ trợ, kháng cự và đường xu hướng</span></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 2. Chỉ báo kỹ thuật và mẫu hình giá <span class="pages">(tr. 113–122)</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> dùng được chỉ báo phổ biến và biết giới hạn của chúng.</p>
+  <ol class="m">
+    <li><span class="num">2.1</span><span class="t">Bộ ba chỉ báo nền tảng: MA, RSI, MACD</span>
+      <span class="rn">Tên cũ: <i>Ba chỉ báo dễ dùng nhất</i> — nêu tên chỉ báo, “nền tảng” cho biết phải học trước.</span></li>
+    <li><span class="num">2.2</span><span class="t">Bollinger Bands và Fibonacci thoái lui</span>
+      <span class="rn">Tên cũ: <i>Chỉ báo bổ sung: Bollinger Bands, Fibonacci hồi quy</i> — “thoái lui” là cách dịch phổ biến hơn của Fibonacci retracement (tác giả chọn một cách gọi và dùng thống nhất).</span></li>
+    <li><span class="num">2.3</span><span class="t">Mẫu hình giá kinh điển</span>
+      <span class="rn">Tên cũ: <i>Mẫu hình giá</i> — thêm “kinh điển” để phân biệt với mẫu hình nến ở 1.3.</span>
+      <ul><li>Hai đỉnh/hai đáy, vai – đầu – vai, cờ, cốc tay cầm</li></ul></li>
+    <li><span class="num">2.4</span><span class="t">Kết hợp chỉ báo và giới hạn của phân tích kỹ thuật</span></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: bộ 20–30 biểu đồ thực hành từng bước.</div>
+</div>
+
+<div class="card chap">
+  <h3>Mục 3. Volume và hành động giá: theo dấu dòng tiền lớn <span class="pages">(tr. 123–132)</span>
+    <span class="rn">Tên cũ: <i>Cung – cầu, hành động giá &amp; volume</i> — nêu mục đích “theo dấu dòng tiền lớn”, đúng ý “dấu chân người khổng lồ” của tác giả.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> hiểu vì sao giá dịch chuyển và nhận ra “dấu chân người khổng lồ” qua khối lượng.</p>
+  <ol class="m">
+    <li><span class="num">3.1</span><span class="t">Cung – cầu tại các vùng giá quan trọng</span>
+      <span class="rn">Tên cũ: <i>Cung và cầu; lực cầu lớn tại các điểm quan trọng</i> — rút gọn.</span></li>
+    <li><span class="num">3.2</span><span class="t">Price action: nhận diện dấu chân “cá mập”</span>
+      <span class="rn">Tên cũ: <i>Hành động giá: ai dịch chuyển giá và cách phát hiện “cá mập” tay to</i> — rút gọn, giữ thuật ngữ gốc price action.</span></li>
+    <li><span class="num">3.3</span><span class="t">Quan hệ giá – khối lượng: đột biến và cạn kiệt</span>
+      <span class="rn">Tên cũ: <i>Volume: quan hệ giá – khối lượng…</i> — “volume” đã có ở tên mục 3, tránh lặp.</span>
+      <ul><li>Các chỉ báo khối lượng</li></ul></li>
+    <li><span class="num">3.4</span><span class="t">Vùng tích lũy và vùng phân phối</span>
+      <span class="rn">Tên cũ: <i>Tích lũy và phân phối</i> — thêm “vùng” vì đây là vùng giá nhìn thấy trên biểu đồ.</span></li>
+    <li><span class="num">3.5</span><span class="t">Vùng giá then chốt: mở – đóng phiên, đỉnh – đáy ngày, tuần, tháng</span></li>
+  </ol>
+  <p class="goal" style="margin-top:8px">Tham chiếu sách <i>Volume</i> của tác giả, lược giản cho người mới.</p>
+</div>
+
+<div class="card chap">
+  <h3>Mục 4. Xu hướng thị trường chung: đọc sóng VN-Index <span class="pages">(tr. 133–138)</span>
+    <span class="rn">Tên cũ: <i>Xu hướng &amp; các pha của thị trường chung</i> — chỉ rõ đối tượng phân tích là VN-Index.</span>
+    <span class="fx">Thêm mới · Sửa lỗi 3: xu hướng thị trường Việt Nam bị chi phối mạnh bởi lãi suất, tín dụng, tỷ giá, margin và khối ngoại; bản cũ chỉ đọc xu hướng bằng biểu đồ. Thêm phần B ngay trong mục này để giữ nguyên số mục.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> biết thị trường đang ở giai đoạn nào trước khi chọn cổ phiếu.</p>
+  <div class="group">A. Đọc xu hướng trên biểu đồ</div>
+  <ol class="m">
+    <li><span class="num">4.1</span><span class="t">Tăng, giảm hay đi ngang? Tín hiệu đổi xu hướng</span>
+      <span class="rn">Tên cũ: <i>Ba trạng thái: tăng, giảm, đi ngang — tín hiệu đổi xu hướng</i> — đặt thành câu hỏi nhà đầu tư tự hỏi mỗi ngày.</span></li>
+    <li><span class="num">4.2</span><span class="t">4 pha của chu kỳ thị trường</span>
+      <span class="rn">Tên cũ: <i>Các pha của thị trường</i> — nêu số pha cụ thể.</span>
+      <ul><li>Tích lũy – tăng giá – phân phối – giảm giá; ví dụ các chu kỳ của VN-Index</li></ul></li>
+    <li><span class="num">4.3</span><span class="t">Đọc phản ứng của thị trường trước tin tức</span>
+      <span class="rn">Tên cũ: <i>Quan sát thị trường và phản ứng với tin tức mới</i> — trọng tâm là đọc cách giá phản ứng, không phải đọc tin.</span></li>
+  </ol>
+  <div class="group">B. Vĩ mô và dòng tiền phía sau xu hướng <span class="fx" style="display:inline;padding:0 6px;text-transform:none;letter-spacing:0">Thêm · lỗi 3</span></div>
+  <ol class="m">
+    <li class="add"><span class="num">4.4</span><span class="t">Lãi suất và tín dụng: “giá vốn” của thị trường</span>
+      <ul><li>Lãi suất điều hành, lãi suất huy động, room tín dụng</li><li>Vì sao lãi suất tăng thì cổ phiếu thường giảm</li></ul></li>
+    <li class="add"><span class="num">4.5</span><span class="t">Tỷ giá và dòng vốn khối ngoại</span>
+      <ul><li>Tỷ giá USD/VND, mua/bán ròng của khối ngoại</li><li>Câu chuyện nâng hạng thị trường</li></ul></li>
+    <li class="add"><span class="num">4.6</span><span class="t">Dư nợ margin toàn thị trường: “nhiệt kế” đòn bẩy</span>
+      <ul><li>Margin lên đỉnh → nguy cơ bán giải chấp dây chuyền</li><li>Bài học 2018 và 2022 (kèm khủng hoảng trái phiếu doanh nghiệp)</li></ul></li>
+    <li class="add"><span class="num">4.7</span><span class="t">Bảng đèn xanh – đèn đỏ vĩ mô mỗi tháng</span>
+      <ul><li>5 chỉ tiêu tự kiểm, kết hợp với 4 pha thị trường ở 4.2</li></ul></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: bảng đèn xanh – đèn đỏ vĩ mô. <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 3</span></div>
+</div>
+
+<div class="card chap">
+  <h3>Mục 5. Ngành dẫn sóng và cổ phiếu dẫn dắt <span class="pages">(tr. 139–144)</span>
+    <span class="rn">Tên cũ: <i>Tư duy ngành &amp; cổ phiếu dẫn dắt</i> — “ngành dẫn sóng” là cách gọi quen thuộc trên thị trường Việt Nam.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> chọn đúng ngành, đúng nhóm cổ phiếu mạnh.</p>
+  <ol class="m">
+    <li><span class="num">5.1</span><span class="t">Dòng tiền luân chuyển giữa các ngành</span>
+      <span class="rn">Tên cũ: <i>Chọn ngành phù hợp tại Việt Nam và dòng tiền luân chuyển</i> — rút gọn; ví dụ ngân hàng, chứng khoán, thép để trong nội dung.</span></li>
+    <li><span class="num">5.2</span><span class="t">Cổ phiếu dẫn dắt hay cổ phiếu bị lãng quên?</span></li>
+    <li><span class="num">5.3</span><span class="t">Chân dung siêu cổ phiếu trên đồ thị</span>
+      <span class="rn">Tên cũ: <i>Mẫu hình đồ thị của các siêu cổ phiếu</i> — tránh lặp chữ “mẫu hình” với 1.3 và 2.3.</span>
+      <ul><li>Ví dụ cổ phiếu Việt Nam từng tăng mạnh, ưu tiên VN30 và vốn hóa lớn</li></ul></li>
+    <li><span class="num">5.4</span><span class="t">Lọc siêu cổ phiếu bằng công cụ tại Việt Nam</span>
+      <span class="rn">Tên cũ: <i>Tìm siêu cổ phiếu</i> — nêu cách làm cụ thể (thay cho nhật báo IBD).</span></li>
+  </ol>
+</div>
+
+<!-- ============ CHƯƠNG 5 ============ -->
+<div class="part" id="p5"><h2>CHƯƠNG 5 — QUẢN TRỊ RỦI RO &amp; CHIẾN LƯỢC: GIỮ VỐN, NHÂN LỢI NHUẬN</h2><p>Trang 145–196</p>
+  <span class="rn">Tên cũ: <i>Quản trị rủi ro, chiến lược &amp; hệ thống giao dịch</i> — vế sau nói đúng thứ tự ưu tiên: giữ vốn trước, kiếm lời sau.</span></div>
+
+<div class="card chap">
+  <h3>Mục 1. Quản trị vốn và phân bổ danh mục <span class="pages">(tr. 145–156)</span>
+    <span class="rn">Tên cũ: <i>Quản trị vốn &amp; xây dựng danh mục</i> — “phân bổ danh mục” là thuật ngữ chuẩn.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> biết mua bao nhiêu, chia vốn thế nào để không “cháy” tài khoản.</p>
+  <ol class="m">
+    <li><span class="num">1.1</span><span class="t">Quy tắc 2%: tính khối lượng mua cho mỗi lệnh</span>
+      <span class="rn">Tên cũ: <i>Quy tắc 2%: rủi ro tối đa mỗi lệnh…</i> — nêu thẳng việc người đọc làm được.</span>
+      <ul><li>Ví dụ vốn 100–200 triệu, dưới 1 tỷ</li></ul></li>
+    <li><span class="num">1.2</span><span class="t">Đa dạng hóa: bao nhiêu mã là đủ?</span>
+      <span class="rn">Tên cũ: <i>Không bỏ trứng vào một rổ</i> — dùng thuật ngữ và câu hỏi cụ thể; câu thành ngữ giữ trong nội dung.</span></li>
+    <li><span class="num">1.3</span><span class="t">Phân bổ theo độ tuổi và khẩu vị rủi ro</span>
+      <ul><li>Dùng kết quả bài test ở Chương 1, mục 3.4</li></ul></li>
+    <li><span class="num">1.4</span><span class="t">Danh mục mẫu cho vốn 10, 50, 200 triệu</span></li>
+    <li><span class="num">1.5</span><span class="t">“Nhổ cỏ, trồng hoa”: cơ cấu danh mục</span>
+      <span class="rn">Tên cũ: <i>Nghệ thuật tăng – giảm tỷ trọng danh mục</i> — “cơ cấu danh mục” là thuật ngữ chuẩn.</span></li>
+    <li><span class="num">1.6</span><span class="t">Margin: con dao hai lưỡi</span>
+      <ul><li>Vay ký quỹ là gì; lời khuyên cho F0</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 2. Kỷ luật cắt lỗ và chốt lời <span class="pages">(tr. 157–166)</span>
+    <span class="rn">Tên cũ: <i>Nghệ thuật cắt lỗ &amp; chốt lời</i> — cắt lỗ là kỷ luật, không phải nghệ thuật; đúng tinh thần “không ngoại lệ”.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> có kỷ luật bán — cả khi lỗ lẫn khi lãi.</p>
+  <ol class="m">
+    <li><span class="num">2.1</span><span class="t">Cắt lỗ 6–8%: không có ngoại lệ</span>
+      <span class="rn">Tên cũ: <i>Khi nào phải cắt lỗ không ngoại lệ</i> — đưa con số lên tên.</span>
+      <ul><li class="addl">Áp dụng cho phong cách giao dịch theo xu hướng (Chương 1, mục 4) <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 1</span></li></ul></li>
+    <li><span class="num">2.2</span><span class="t">Đặt điểm dừng lỗ ở đâu?</span>
+      <span class="rn">Tên cũ: <i>Đặt điểm dừng lỗ – chốt lời ở đâu</i> — phần chốt lời đã có ở 2.4, tránh trùng.</span>
+      <ul><li>Dựa trên hỗ trợ/kháng cự và các mức giá đã được test (Chương 4, mục 1 và 3)</li></ul></li>
+    <li><span class="num">2.3</span><span class="t">Vì sao gồng lỗ dễ hơn gồng lãi?</span>
+      <ul><li>Cách vượt qua tâm lý này</li></ul></li>
+    <li><span class="num">2.4</span><span class="t">Chốt lời từng phần và trailing stop</span>
+      <span class="rn">Tên cũ: <i>Khi nào nên chốt lời</i> — nêu hai kỹ thuật chính.</span></li>
+    <li class="add"><span class="num">2.5</span><span class="t">Ba luật bán cho ba phong cách</span>
+      <span class="fx">Thêm mới · Sửa lỗi 1: quy tắc cắt lỗ 6–8% “không ngoại lệ” mâu thuẫn với đầu tư giá trị và tích sản; mục này nói rõ luật bán của từng phong cách.</span>
+      <ul><li>Giao dịch theo xu hướng: cắt lỗ 6–8% (mục 2.1)</li><li>Đầu tư giá trị: bán khi luận điểm đầu tư bị phá vỡ (lợi nhuận suy giảm bền vững, lãnh đạo có vấn đề, mất lợi thế cạnh tranh)</li><li>Tích sản: không cắt lỗ theo giá; chỉ cơ cấu định kỳ (mục 1.5)</li></ul></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 3. Đầu tư cho người bận rộn: 30 phút mỗi tuần <span class="pages">(tr. 167–174)</span>
+    <span class="rn">Tên cũ: <i>Chiến lược đầu tư cho người bận rộn</i> — đưa cam kết thời gian lên tên.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> đầu tư hiệu quả mà không cần theo dõi bảng giá hằng ngày.</p>
+  <ol class="m">
+    <li><span class="num">3.1</span><span class="t">Tích sản DCA: mua đều mỗi tháng</span>
+      <span class="rn">Tên cũ: <i>Đầu tư tích sản (DCA)</i> — thêm vế giải nghĩa.</span>
+      <ul><li class="addl">Không áp dụng cắt lỗ 6–8% cho danh mục tích sản (mục 2.5) <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 1</span></li></ul></li>
+    <li><span class="num">3.2</span><span class="t">ETF: mua cả thị trường</span>
+      <ul><li>Ưu và nhược điểm</li></ul></li>
+    <li><span class="num">3.3</span><span class="t">Bộ lọc 5 bước chọn cổ phiếu cuối tuần</span>
+      <ul><li>Kết hợp Chương 3 và Chương 4</li></ul></li>
+  </ol>
+  <div class="tool">🧰 Công cụ đi kèm: Excel mô phỏng DCA; checklist bộ lọc 5 bước (lọc nhanh nhiều mã — khác checklist phân tích sâu ở Chương 3, mục 3).</div>
+</div>
+
+<div class="card chap">
+  <h3>Mục 4. Hệ thống giao dịch: setup và quản lý lệnh <span class="pages">(tr. 175–188)</span>
+    <span class="rn">Tên cũ: <i>Hệ thống giao dịch chủ động: setup &amp; quản lý lệnh</i> — bỏ “chủ động” cho gọn.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> có quy trình vào lệnh – quản lý lệnh rõ ràng, lặp lại được.</p>
+  <ol class="m">
+    <li><span class="num">4.1</span><span class="t">Chọn phong cách: lướt sóng, giao dịch theo sóng hay đầu tư dài hạn</span>
+      <span class="rn">Tên cũ: <i>Chọn phong cách: giao dịch ngắn hạn, theo sóng hay dài hạn</i> — dùng đúng cách gọi trên thị trường.</span>
+      <ul><li>Quản lý vị thế theo từng phong cách</li><li class="addl">Đây là các kiểu nhỏ bên trong phong cách giao dịch theo xu hướng; ba phong cách tổng quát đã chọn ở Chương 1, mục 4 <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi 1</span></li></ul></li>
+    <li><span class="num">4.2</span><span class="t">Điểm mua: điều kiện, thời điểm, khối lượng</span>
+      <span class="rn">Tên cũ: <i>Tôi vào lệnh như thế nào</i> — dùng thuật ngữ “điểm mua”; giọng kể cá nhân để ở 4.8.</span></li>
+    <li><span class="num">4.3</span><span class="t">3 setup thực chiến: tích lũy, theo xu hướng, theo giá</span>
+      <span class="rn">Tên cũ: <i>Ba setup chính</i> — nêu tên từng setup.</span></li>
+    <li><span class="num">4.4</span><span class="t">Setup đảo chiều xu hướng</span>
+      <span class="rn">Tên cũ: <i>Giao dịch đảo chiều xu hướng</i> — đồng bộ với chữ “setup” ở 4.3.</span></li>
+    <li><span class="num">4.5</span><span class="t">Lướt sóng trong điều kiện T+</span>
+      <span class="rn">Tên cũ: <i>Giao dịch ngắn hạn trong điều kiện T+ tại Việt Nam</i> — rút gọn.</span></li>
+    <li><span class="num">4.6</span><span class="t">Quản lý lệnh: một giao dịch thực tế từ đầu đến cuối</span></li>
+    <li><span class="num">4.7</span><span class="t">Bộ quy tắc giao dịch đã được kiểm chứng</span>
+      <span class="rn">Tên cũ: <i>Những quy tắc giao dịch đã được thời gian kiểm chứng</i> — rút gọn.</span></li>
+    <li><span class="num">4.8</span><span class="t">Nhật ký tác giả: 3–5 giao dịch thật</span>
+      <span class="rn">Tên cũ: <i>Góc kinh nghiệm của tác giả</i> — “nhật ký” gợi tính thật, nối với mẫu nhật ký ở Phụ lục B.</span></li>
+  </ol>
+</div>
+
+<div class="card chap">
+  <h3>Mục 5. 21 sai lầm kinh điển và checklist mua – bán <span class="pages">(tr. 189–196)</span>
+    <span class="rn">Tên cũ: <i>21 sai lầm phổ biến &amp; checklist tổng kết</i> — nêu rõ checklist dùng cho việc gì.</span></h3>
+  <p class="goal"><b>Mục tiêu:</b> ôn lại toàn bộ sách qua những lỗi hay gặp nhất.</p>
+  <ol class="m">
+    <li><span class="num">5.1</span><span class="t">21 sai lầm theo 5 nhóm</span>
+      <ul><li>Tâm lý, chọn cổ phiếu, chọn thời điểm, quản trị vốn, công cụ &amp; giao dịch</li></ul></li>
+    <li><span class="num">5.2</span><span class="t">Biểu hiện – hậu quả – cách tránh</span>
+      <span class="rn">Tên cũ: <i>Mỗi sai lầm 1 dòng…</i> — dùng luôn cấu trúc trình bày làm tên.</span>
+      <ul><li>Mỗi sai lầm 1 dòng, kèm <i>xem lại mục…</i> (không giảng lại)</li></ul></li>
+    <li><span class="num">5.3</span><span class="t">Checklist trước khi mua, trước khi bán</span></li>
+  </ol>
+</div>
+
+<!-- ============ PHỤ LỤC ============ -->
+<div class="part" id="pl"><h2>PHỤ LỤC</h2><p>Trang 197–200</p></div>
+<div class="card chap">
+  <ol class="m">
+    <li><span class="num">A.</span><span class="t">20 thuật ngữ bắt buộc phải biết</span>
+      <ul><li>Tra cứu nhanh, ghi kèm mục giải thích</li></ul></li>
+    <li><span class="num">B.</span><span class="t">Mẫu nhật ký giao dịch và checklist mua – bán</span>
+      <ul><li>Bản in để điền (checklist lấy từ Chương 5, mục 5.3)</li></ul></li>
+    <li><span class="num">C.</span><span class="t">Nguồn dữ liệu và công cụ tra cứu tại Việt Nam</span></li>
+    <li><span class="num">D.</span><span class="t">Tuyên bố miễn trừ trách nhiệm</span>
+      <ul><li>Nội dung mang tính giáo dục, không phải khuyến nghị đầu tư</li></ul></li>
+  </ol>
+</div>
+
+<!-- ============ SỬA 3 LỖI ============ -->
+<h2 class="sec" id="fix3">Sửa 3 lỗi chết người (chỉ thêm, không xóa nội dung cũ)</h2>
+<div class="card tbl">
+<table>
+  <thead><tr><th style="width:26%">Lỗi</th><th style="width:30%">Hậu quả nếu không sửa</th><th>Đã thêm gì, ở đâu</th></tr></thead>
+  <tbody>
+    <tr><td><b>1. Trộn lẫn hai trường phái</b>: đầu tư giá trị/tích sản và giao dịch theo xu hướng</td><td>Mua theo biên an toàn rồi cắt lỗ 7% đúng đáy; người làm DCA không biết có phải cắt lỗ</td><td>
+      • <b>Mục mới:</b> Chương 1, mục 4 — Chọn phong cách đầu tư<br>
+      • <b>Mục nhỏ mới:</b> Chương 5, mục 2.5 — Ba luật bán cho ba phong cách<br>
+      • <b>Dòng dẫn chiếu:</b> C1 3.4 · C3 3.4 · C5 2.1, 3.1, 4.1</td></tr>
+    <tr><td><b>2. Một khung phân tích cơ bản cho mọi ngành</b></td><td>Loại oan ngân hàng vì “nợ cao”, đọc sai lợi nhuận bất động sản</td><td>
+      • <b>Mục nhỏ mới:</b> Chương 3, mục 1.6 — Báo cáo ngành đặc thù<br>
+      • <b>Dòng dẫn chiếu:</b> C3 1.4, 1.5</td></tr>
+    <tr><td><b>3. Thiếu vĩ mô và dòng tiền chính sách</b></td><td>Thấy giá giảm mới biết; không nhận ra tín hiệu sớm từ lãi suất, tín dụng, margin</td><td>
+      • <b>Phần mới:</b> Chương 4, mục 4 phần B (4.4–4.7) + bảng đèn xanh – đèn đỏ<br>
+      • <b>Dòng dẫn chiếu:</b> C1 3.2 · C3 2.1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============ TỔNG HỢP THAY ĐỔI ============ -->
+<h2 class="sec" id="changes">Tổng hợp thay đổi bố cục so với bản gốc</h2>
+<div class="card tbl">
+<table>
+  <thead><tr><th style="width:34%">Bản gốc</th><th>Đã sửa thế nào &amp; vì sao</th></tr></thead>
+  <tbody>
+    <tr><td>Đánh số lẫn lộn: “Chương” lồng trong “Chương”, hai mục số 13, mục 12 trống</td><td>Thống nhất 3 cấp: <b>Chương → mục (đánh lại từ 1 trong mỗi chương) → mục nhỏ x.y</b>. Bỏ trùng số, lấp mục trống.</td></tr>
+    <tr><td>Chương 4 tên “Quản trị rủi ro &amp; bản đồ sinh tồn” nhưng nội dung là biểu đồ, chỉ báo</td><td>Đổi thành “Phân tích kỹ thuật &amp; dòng tiền”. Quản trị rủi ro thật nằm ở Chương 5.</td></tr>
+    <tr><td>Lời tựa nằm trong mục 1</td><td>Tách thành <b>Lời mở đầu</b> riêng.</td></tr>
+    <tr><td>Tâm lý F0 đứng trước Toàn cảnh thị trường</td><td>Đảo lại: phải biết công ty chứng khoán, người tư vấn là ai thì mới nhận ra lừa đảo “phím hàng”, room VIP.</td></tr>
+    <tr><td>“Chứng khoán là cờ bạc?”, “Tư duy cốt lõi” ở mục tâm lý</td><td>Chuyển về Chương 1, mục 1 — đây là câu hỏi về bản chất.</td></tr>
+    <tr><td>“Đối tượng tham gia thị trường” và “Giải thích thuật ngữ: cá nhân, tổ chức, khối ngoại…”</td><td>Trùng nhau → gộp thành Chương 1, mục 2.3.</td></tr>
+    <tr><td>“Hệ thống pháp lý &amp; hạ tầng” và “CTCK hợp pháp, hành lang pháp lý”</td><td>Phân vai: Chương 1, mục 2.1 nói cả hệ thống ai làm gì; Chương 2, mục 1.1 chỉ trả lời “tiền của tôi có an toàn không”.</td></tr>
+    <tr><td>“Cẩm nang A–Z” gom quá nhiều việc</td><td>Tách thành Chương 2, mục 1 (mở tài khoản, phí, công cụ) và mục 3 (lệnh, T+), kẹp mục 2 bảng giá ở giữa.</td></tr>
+    <tr><td>Sự kiện doanh nghiệp nên ở chương thực hành hay chương phân tích cơ bản?</td><td>Giữ ở Chương 2 vì mục tiêu là tác động tới tài khoản và người mới gặp ngay sau lệnh mua đầu tiên. Phần đánh giá (pha loãng EPS, tin lãnh đạo/cổ đông lớn, đọc báo cáo) để ở Chương 3, hai bên dẫn chiếu qua lại, không giảng lại.</td></tr>
+    <tr><td>Sự kiện doanh nghiệp: ghi chú “chia 2 ý” nhưng chưa chia</td><td>Chia nhóm A (định kỳ), B (bất thường), C (kỹ năng đọc công bố).</td></tr>
+    <tr><td>Phân tích cơ bản: BCTC → Định giá → Lợi thế cạnh tranh</td><td>Đổi thành BCTC → Phân tích định tính → Định giá: chỉ hỏi “đắt hay rẻ” sau khi biết doanh nghiệp tốt hay xấu.</td></tr>
+    <tr><td>“5 phút đọc nhanh” nằm ở mục BCTC nhưng có bước định giá</td><td>Chuyển xuống Chương 3, mục 3.6 làm bài tổng hợp cả Chương 3.</td></tr>
+    <tr><td>“Nhân hòa – BLĐ” và “Đánh giá ban lãnh đạo” ở 2 chỗ</td><td>Gộp vào Chương 3, mục 2.5.</td></tr>
+    <tr><td>EPS định nghĩa ở mục BCTC và lại bàn ở mục định giá</td><td>Chương 3: mục 1.4 định nghĩa; mục 3.2 chỉ bàn chất lượng EPS.</td></tr>
+    <tr><td>Mục biểu đồ quá dày</td><td>Tách: Chương 4, mục 1 (nến, hỗ trợ/kháng cự) và mục 2 (chỉ báo, mẫu hình).</td></tr>
+    <tr><td>“Ai dịch chuyển giá” và “phát hiện cá mập” trùng; “Các chỉ báo liên quan” và “Chỉ báo volume” trùng</td><td>Gộp thành Chương 4, mục 3.2 và 3.3.</td></tr>
+    <tr><td>“Phân tích A–Z: giao dịch trong ngày, theo sóng, dài hạn, quản lý vị thế” nằm ở mục volume</td><td>Đây là chiến lược → chuyển sang Chương 5, mục 4.1.</td></tr>
+    <tr><td>Mục 12 trống; “Xác định xu hướng chung” nằm trong mục 13</td><td>Gom thành Chương 4, mục 4, thêm “các pha thị trường” theo ghi chú của tác giả.</td></tr>
+    <tr><td>Quy tắc 2% và 6–8% cùng một gạch đầu dòng</td><td>2% là <b>mua bao nhiêu</b> (Chương 5, mục 1.1), 6–8% là <b>khi nào bán</b> (Chương 5, mục 2.1).</td></tr>
+    <tr><td>Cắt lỗ đứng trước quản trị vốn; người bận rộn đứng sau setup</td><td>Đảo: vốn → cắt lỗ → chiến lược đơn giản → hệ thống giao dịch → tổng kết.</td></tr>
+    <tr><td>21 sai lầm dễ lặp lại FOMO, phím hàng, margin…</td><td>Viết 1 dòng + dẫn chiếu mục; checklist chỉ đặt ở Chương 5, mục 5.3, Phụ lục B chỉ là bản in.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============ GHI CHÚ ============ -->
+<h2 class="sec" id="notes">Điểm cần tác giả xác nhận</h2>
+<div class="card">
+  <ol class="note">
+    <li><b>“ROS_back tiền”</b> — chưa rõ ý. Nếu là cơ chế bảo vệ/hoàn tiền cho nhà đầu tư thì đưa vào Chương 2, mục 1.1.</li>
+    <li><b>“Công ty chứng khoán… sẽ không bao giờ bị lừa”</b> — nên tránh câu cam kết tuyệt đối. Đề xuất: “giao dịch qua công ty chứng khoán được cấp phép là kênh an toàn; rủi ro thường đến từ cá nhân mạo danh”.</li>
+    <li><b>Các quy định cần cập nhật sát ngày in:</b> biên độ, giờ giao dịch, chu kỳ T+, phí – thuế, lô lẻ (Chương 1: 2.2 · Chương 2: 1.4, 3.1, 3.2, 3.4 · Chương 5: 4.5).</li>
+    <li><b>Thuật ngữ cần thống nhất toàn sách:</b> “Fibonacci thoái lui” hay “hồi quy”; “price action” hay “hành động giá”; “trailing stop” hay “dừng lỗ động” — chọn một cách gọi, lần đầu xuất hiện ghi kèm tiếng Anh.</li>
+    <li><b>Các mục do biên tập bổ sung</b> (Chương 1: 1.1 · Chương 2: 1.2, 3.2) có thể bỏ nếu thiếu trang.</li>
+    <li><b>Số trang</b> đã chia lại theo mục nhưng giữ nguyên khung trang của từng chương như bản gốc.</li>
+    <li class="addl"><b>Phần thêm để sửa 3 lỗi</b> (Chương 1 mục 4; Chương 3 mục 1.6; Chương 4 mục 4.4–4.7; Chương 5 mục 2.5) cần thêm khoảng 14–18 trang: cần cân lại số trang hoặc rút gọn phần khác. <span class="fx" style="display:inline;padding:0 6px">Thêm · lỗi </span></li>
+  </ol>
+</div>
+
+</div>
+<script>
+(function(){
+  var bN=document.getElementById('bNote'), bC=document.getElementById('bClean');
+  function set(clean){
+    document.body.classList.toggle('clean',clean);
+    bN.setAttribute('aria-pressed',String(!clean));
+    bC.setAttribute('aria-pressed',String(clean));
+  }
+  bN.addEventListener('click',function(){set(false)});
+  bC.addEventListener('click',function(){set(true)});
+})();
+</script>
+</body>
+</html>
